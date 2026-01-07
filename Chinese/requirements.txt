@@ -1,0 +1,8 @@
+torch==1.8.0+cu111
+tqdm
+transformers==4.18.0
+pytorch_transformers==1.2.0
+joblib
+nltk
+numpy
+bert_score

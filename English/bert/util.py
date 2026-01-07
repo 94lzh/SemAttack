@@ -35,7 +35,7 @@ def get_args():
     parser.add_argument('--function', type=str, default='all',
                         choices=['all', 'typo', 'knowledge', 'cluster'],
                         help='purturbation function')
-    parser.add_argument('--scale', type=int, default=1,
+    parser.add_argument('--scale', type=int, default=20,
                         help='test scale')
     parser.add_argument('--attack-model', type=str, default='teacher',
                         choices=['teacher', 'student'],

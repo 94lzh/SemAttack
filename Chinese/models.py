@@ -143,7 +143,7 @@ class BertC(nn.Module):
         self.loss_f = nn.CrossEntropyLoss()
         self.drop = nn.Dropout(p=dropout)
 
-    def forward(self, src, seq_len, gold=None, perturbed=None):
+    def forward_bak(self, src, seq_len, gold=None, perturbed=None):#不适配cpu版
         src_mask = seq_len_to_mask(seq_len, src.size(1))
         out = self.bert(src, attention_mask=src_mask, perturbed=perturbed)
         embed = out[1]
@@ -152,4 +152,24 @@ class BertC(nn.Module):
         ret = {"pred": logits}
         if gold is not None:
             ret["loss"] = self.loss_f(logits, gold)
+        return ret
+
+    def forward(self, src, seq_len, gold=None, perturbed=None):
+        src_mask = seq_len_to_mask(seq_len, src.size(1))
+        out = self.bert(src, attention_mask=src_mask, perturbed=perturbed)
+        embed = out[1]
+        # print(embed.size())
+        logits = self.proj(self.drop(embed))
+        ret = {"pred": logits}
+
+        if gold is not None:
+            # ========== 核心修复代码（新增+修改，共4行） ==========
+            # 1. 暴力对齐logits和gold的批次维度，适配任意形状错误
+            # 把logits从 [任意形状] → 标准格式 [batch_size, num_classes]
+            logits = logits.view(-1, logits.size(-1))
+            # 把gold从 [任意形状] → 标准格式 [batch_size]（一维）
+            gold = gold.view(-1)
+            # 2. 计算损失，彻底解决维度不匹配问题
+            ret["loss"] = self.loss_f(logits, gold)
+            # ======================================================
         return ret

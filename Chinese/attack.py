@@ -133,6 +133,7 @@ def cw_word_attack(data_val):
             batch['add_end'].append(seq)
 
         data = batch['seq'] = torch.stack(batch['seq']).t().to(device)
+
         orig_sent = transform(batch['seq'][0])
 
         seq_len = batch['seq_len'] = batch['seq_len'].to(device)
@@ -163,6 +164,12 @@ def cw_word_attack(data_val):
 
         # prepare attack
         input_embedding = model.bert.embeddings.word_embeddings(data)
+        print("=" * 50)
+        print("✅ 验证传入run的input维度（input_embedding）")
+        print(f"📌 input_embedding.shape = {input_embedding.shape}")
+        print(
+            f"📌 维度拆解 → [seq_len={input_embedding.shape[0]}, batch_size={input_embedding.shape[1]}, hidden_dim={input_embedding.shape[2]}]")
+        print("=" * 50)
         cw_mask = np.zeros(input_embedding.shape).astype(np.float32)
         cw_mask = torch.from_numpy(cw_mask).float().to(device)
         for i, seq in enumerate(batch['seq_len']):

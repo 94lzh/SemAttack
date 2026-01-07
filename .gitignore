@@ -1,0 +1,17 @@
+# IDE配置（忽略）
+.idea/
+.vscode/
+
+# 虚拟环境（忽略）
+venv/
+env/
+
+# 大文件/数据文件（忽略，这些文件无需推送到远程）
+*.bin
+*.pt
+*.pth
+*.whl
+
+__pycache__/
+
+*.log

@@ -60,7 +60,7 @@ def get_args():
                         help='hidden (fully connected) layer size for classifier MLP')
     parser.add_argument('--lr', type=float, default=.1,  # TODO
                         help='initial learning rate')
-    parser.add_argument('--epochs', type=int, default=40,
+    parser.add_argument('--epochs', type=int, default=10,
                         help='upper epoch limit')
     parser.add_argument('--seed', type=int, default=1111,
                         help='random seed')
@@ -104,7 +104,7 @@ def get_args():
                         help='location of the development data, should be a json file')
     parser.add_argument('--test-data', type=str, default='tst.pkl',
                         help='location of the test data, should be a json file')
-    parser.add_argument('--embedding-data', type=str, default='s.pt',
+    parser.add_argument('--embedding-data', type=str, default='embedding_space.pt',
                         help='location of the embedding data, should be a json file')
     parser.add_argument('--word-list', type=str, default='word_list.pkl',
                         help='location of the word list data, should be a json file')
